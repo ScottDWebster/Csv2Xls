@@ -18,23 +18,37 @@
 #     REVISION: 001
 #===============================================================================
 
-#use strict;
+use strict;
 use warnings;
 use utf8;
-
 use Spreadsheet::WriteExcel;
 use GetOpt::Long;
 use File::Spec;
 
-open (CSVFILE, 'On_Order_Report_By_Sku.csv');
-my $workbook = Spreadsheet::WriteExcel->new('On_Order_Report_By_Sku.xls');
-$worksheet1 = $workbook->add_worksheet("Sheet1");
+# Variable Declaration
+my ($debug, $CSV_FileName, $XLS_FileName, $LineNum, @LineArray, $LineRef, $WorkSheet);
 
-$LineNum = 1;
+$debug = 0;
+
+# debug print
+if($debug){print ("\$ARGV[0] = $ARGV[0]\n");}
+# get filename from Arguemant vector zero
+$CSV_FileName = $ARGV[0];
+if($debug){print("\$CSV_FileName = $CSV_FileName\n");}
+# assign $CSV_FileName to $XLS_FileName
+$XLS_FileName = $CSV_FileName;
+# Change file extension from csv to xls
+$XLS_FileName =~ s/.csv$/.xls/;
+if($debug){print("\$XLS_FileName = $XLS_FileName\n");}
+
+open (CSVFILE, "$CSV_FileName");
+my $WorkBook = Spreadsheet::WriteExcel->new("$XLS_FileName");
+my $WorkSheet1 = $WorkBook->add_worksheet("Sheet1");
+
 while (<CSVFILE>)
 {
 	chomp;
 	@LineArray = split(',', $_);
 	$LineRef = \@LineArray;
-	$worksheet1->write_row($LineNum++, 0, $LineRef);
+	$WorkSheet1->write_row($LineNum++, 0, $LineRef);
 }
