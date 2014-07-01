@@ -27,6 +27,7 @@ use File::Spec;
 
 # Variable Declaration
 my ($debug, $CSV_FileName, $XLS_FileName, $LineNum, @LineArray, $LineRef, $WorkSheet);
+my ($element);
 
 $debug = 0;
 
@@ -49,6 +50,13 @@ while (<CSVFILE>)
 {
 	chomp;
 	@LineArray = split(',', $_);
+#	Remove leading and trailing whitespace from each element in the array
+	foreach $element (@LineArray)
+	{
+		if($debug){print("BEFORE \$element = [$element]\n");}
+		$element =~ s/\s+(.+?)\s+/$1/;
+		if($debug){print("AFTER  \$element = [$element]\n");}
+	}
 	$LineRef = \@LineArray;
 	$WorkSheet1->write_row($LineNum++, 0, $LineRef);
 }
