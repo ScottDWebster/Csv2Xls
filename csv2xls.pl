@@ -29,7 +29,7 @@ use File::Spec;
 my ($debug, $CSV_FileName, $XLS_FileName, $LineNum, @LineArray, $LineRef, $WorkSheet);
 my ($element);
 
-$debug = 0;
+$debug = 1;
 
 # debug print
 if($debug){print ("\$ARGV[0] = $ARGV[0]\n");}
@@ -54,7 +54,7 @@ while (<CSVFILE>)
 	foreach $element (@LineArray)
 	{
 		if($debug){print("BEFORE \$element = [$element]\n");}
-		$element =~ s/\s+(.+?)\s+/$1/;
+		$element =~ s/^\s*(.+?)\s*$/$1/;
 		if($debug){print("AFTER  \$element = [$element]\n");}
 	}
 	$LineRef = \@LineArray;
