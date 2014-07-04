@@ -45,6 +45,7 @@ if($debug){print("\$XLS_FileName = $XLS_FileName\n");}
 open (CSVFILE, "$CSV_FileName");
 my $WorkBook = Spreadsheet::WriteExcel->new("$XLS_FileName");
 my $WorkSheet1 = $WorkBook->add_worksheet("Sheet1");
+$WorkSheet1->keep_leading_zeros();
 
 while (<CSVFILE>)
 {
