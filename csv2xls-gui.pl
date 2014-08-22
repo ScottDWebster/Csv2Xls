@@ -41,11 +41,11 @@ $MyDocsPath = Win32::GetFolderPath(CSIDL_PERSONAL);
 				);
 @OutFileFilter = ("Excel Spreadsheet", "*.xls");
 
-$debug = 1;	# 0 = off, 1 = on
+$debug = 1;	# 0 = off, 1 = on, 2 = verbose (show element modifications)
 
 # Get file name from GUI dialog
 $CSV_FileName = Win32::GUI::GetOpenFileName(
-					-title => "Input File to Open",
+					-title => "Input CSV File to Open",
 					-directory => $MyDocsPath,
 					-filemustexiest => 1,
 					-defaultextension => "csv",
@@ -60,7 +60,7 @@ $XLS_DefaultFileName =~ s/.[Cc][Ss][Vv]$/.xls/;
 if($debug){print("\$XLS_DefaultFileName = $XLS_DefaultFileName\n");}
 # Get file name from GUI dialog
 $XLS_FileName = Win32::GUI::GetSaveFileName(
-					-title => "Output File to Save",
+					-title => "Output Excel File to Save",
 					-file => $XLS_DefaultFileName,
 					-filter => \@OutFileFilter
 					);
@@ -82,9 +82,9 @@ while (<CSVFILE>)
 #	Remove leading and trailing whitespace from each element in the array
 	foreach $element (@LineArray)
 	{
-		if($debug){print("BEFORE \$element = [$element]\t");}
+		if($debug > 1){print("BEFORE \$element = [$element]\t");}
 		$element =~ s/^\s*(.+?)\s*$/$1/;
-		if($debug){print("AFTER  \$element = [$element]\n");}
+		if($debug > 1){print("AFTER  \$element = [$element]\n");}
 	}
 #	Create a reference to the array
 	$LineRef = \@LineArray;
