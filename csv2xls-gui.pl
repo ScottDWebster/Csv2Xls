@@ -8,7 +8,8 @@
 #  DESCRIPTION: Converts a comma separated values (.csv) file to and Excel
 #  				spreadsheet (.xls), leaving leading zeros in place (Excel
 #  				removes leading zeros when importing csv files).  This version
-#  				uses a GUI to choose the input and output files.
+#  				uses a GUI to choose the input and output files and a progressbar
+#  				to show that the file is being processed.
 #
 #      OPTIONS: ---
 # REQUIREMENTS: Win32::GUI, Spreadsheet::WriteExcel
