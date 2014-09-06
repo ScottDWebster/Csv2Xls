@@ -21,17 +21,17 @@
 #     REVISION: ---
 #===============================================================================
 
-use strict;
+#use strict;
 use warnings;
 use utf8;
 use Spreadsheet::WriteExcel;
-use Win32 qw(CSIDL_PERSONAL);
+use Win32 qw( CSIDL_PERSONAL );
 use Win32::GUI();
 
 # Variable Declarations
-my ($debug, $CSV_FileName, $XLS_FileName, $XLS_DefaultFileName, $LineNum,
+my ($debug, $lines, $CSV_FileName, $XLS_FileName, $XLS_DefaultFileName, $LineNum,
 	@LineArray, $LineRef, $element, $WorkSheet, @InFileFilter, @OutFileFilter,
-	$MyDocsPath);
+	$MyDocsPath, $Win);
 
 # Look up the "My Documents" path 
 $MyDocsPath = Win32::GetFolderPath(CSIDL_PERSONAL);
@@ -45,7 +45,7 @@ $debug = 0;	# 0 = off, 1 = on, 2 = verbose (show element modifications)
 
 # Get file name from GUI dialog
 $CSV_FileName = Win32::GUI::GetOpenFileName(
-					-title => "Input File to Open",
+					-title => "Input CSV File to Open",
 					-directory => $MyDocsPath,
 					-filemustexiest => 1,
 					-defaultextension => "csv",
@@ -60,12 +60,21 @@ $XLS_DefaultFileName =~ s/.[Cc][Ss][Vv]$/.xls/;
 if($debug){print("\$XLS_DefaultFileName = $XLS_DefaultFileName\n");}
 # Get file name from GUI dialog
 $XLS_FileName = Win32::GUI::GetSaveFileName(
-					-title => "Output File to Save",
+					-title => "Output Excel File to Save",
 					-file => $XLS_DefaultFileName,
 					-filter => \@OutFileFilter
 					);
 if($debug){print("\$XLS_FileName = $XLS_FileName\n");}
 
+$lines = 0;
+# Open csv file fo count lines
+open (CSVFILE, "$CSV_FileName");
+$lines += tr/\n/\n/ while sysread(CSVFILE, $_, 2 ** 16);
+#while (<CSVFILE>)
+#{ $lines++ }
+close (CSVFILE);
+
+# Open filhandle to csv file for processing
 open (CSVFILE, "$CSV_FileName");
 # Create workbook object
 my $WorkBook = Spreadsheet::WriteExcel->new("$XLS_FileName");
@@ -74,8 +83,39 @@ my $WorkSheet1 = $WorkBook->add_worksheet("Sheet1");
 # Set option to keep leading zeros
 $WorkSheet1->keep_leading_zeros();
 
+
+$Win = new Win32::GUI::Window(
+	-title	=>	"Csv2Xls-gui",
+	-width	=>	300,
+	-height	=>	150,
+	-name	=>	"Progress"
+) or print_and_die("new Window");
+
+$Win->AddLabel(
+	-name	=>	"PRCSNG",
+	-text	=>	"Processing...",
+	-left	=>	0, #$Win->Width / 8,
+	-top	=>	50
+);
+
+$Win->AddProgressBar(
+	-name	=>	"PB",
+	-top	=>	$Win->Height / 4,
+	-left	=>	$Win->Width / 8,
+	-width	=>	($Win->Width / 4) * 3,
+	-height =>	$Win->Height / 4,
+	-smooth	=>	1
+);
+$Win->PB->SetPos(0);
+
+$Win->Show;
+$LineNum = 0;
+
 while (<CSVFILE>)
 {
+	$PctDone = 100 * ($LineNum / $lines);
+	if($debug){print("$PctDone = $LineNum / $lines\n");}
+	$Win->PB->SetPos( $PctDone );
 #	Remove EOL (end of line) character(s)
 	chomp;
 	@LineArray = split(',', $_);
@@ -90,4 +130,10 @@ while (<CSVFILE>)
 	$LineRef = \@LineArray;
 #	print the row and increment the line number counter
 	$WorkSheet1->write_row($LineNum++, 0, $LineRef);
+}
+
+sub print_and_die {
+    my($text) = @_;
+    my $err = Win32::GetLastError();
+    die "$text: Error $err\n";
 }
