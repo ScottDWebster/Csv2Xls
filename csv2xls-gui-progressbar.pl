@@ -87,20 +87,27 @@ $WorkSheet1->keep_leading_zeros();
 $Win = new Win32::GUI::Window(
 	-title	=>	"Csv2Xls-gui",
 	-width	=>	300,
-	-height	=>	100,
+	-height	=>	150,
 	-name	=>	"Progress"
 ) or print_and_die("new Window");
+
+$Win->AddLabel(
+	-name	=>	"PRCSNG",
+	-text	=>	"Processing...",
+	-left	=>	0, #$Win->Width / 8,
+	-top	=>	50
+);
 
 $Win->AddProgressBar(
 	-name	=>	"PB",
 	-top	=>	$Win->Height / 4,
 	-left	=>	$Win->Width / 8,
 	-width	=>	($Win->Width / 4) * 3,
-	-height =>	25,
+	-height =>	$Win->Height / 4,
 	-smooth	=>	1
 );
-
 $Win->PB->SetPos(0);
+
 $Win->Show;
 $LineNum = 0;
 
