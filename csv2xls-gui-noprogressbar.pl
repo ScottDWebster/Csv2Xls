@@ -1,14 +1,15 @@
 #!/usr/bin/env perl 
 #===============================================================================
 #
-#         FILE: csv2xls-gui.pl
+#         FILE: csv2xls-gui-noprogressbar.pl
 #
-#        USAGE: ./csv2xls-gui.pl  
+#        USAGE: ./csv2xls-gui-noprogressbar.pl  
 #
 #  DESCRIPTION: Converts a comma separated values (.csv) file to and Excel
 #  				spreadsheet (.xls), leaving leading zeros in place (Excel
 #  				removes leading zeros when importing csv files).  This version
-#  				uses a GUI to choose the input and output files.
+#  				uses a GUI to choose the input and output files but does not use
+#  				a progressbar.  
 #
 #      OPTIONS: ---
 # REQUIREMENTS: Win32::GUI, Spreadsheet::WriteExcel
