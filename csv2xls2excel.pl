@@ -29,9 +29,9 @@ use Spreadsheet::WriteExcel;
 my ($debug, $CSV_FileName, $XLS_FileName, $LineNum, @LineArray, $LineRef);
 my ($element, $WorkSheeti, $Excel);
 
-$debug = 1;	# 0 = off, 1 = on
+$debug = 0;	# 0 = off, 1 = on
 
-$Excel = "EXCEL.EXE";
+$Excel = "C:/PROGRA~1/MICROS~2/OFFICE11/EXCEL.EXE";
 
 # debug print
 if($debug){print ("\$ARGV[0] = $ARGV[0]\n");}
@@ -69,4 +69,6 @@ while (<CSVFILE>)
 #	print the row and increment the line number counter
 	$WorkSheet1->write_row($LineNum++, 0, $LineRef);
 }
-exec $Excel or die "Can't exec \$Excel [$Excel]";
+
+$WorkBook->close();
+exec ($Excel, $XLS_FileName) or die "Can't exec \$Excel [$Excel]";
