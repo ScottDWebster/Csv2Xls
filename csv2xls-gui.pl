@@ -138,3 +138,4 @@ sub print_and_die {
     my $err = Win32::GetLastError();
     die "$text: Error $err\n";
 }
+$WorkBook->close();
