@@ -33,7 +33,7 @@ $debug = 1;	# 0 = off, 1 = on
 
 # debug print
 if($debug){print ("\$ARGV[0] = $ARGV[0]\n");}
-# get filename from Arguemant vector zero
+# get filename from Argument vector zero
 $CSV_FileName = $ARGV[0];
 if($debug){print("\$CSV_FileName = $CSV_FileName\n");}
 # assign $CSV_FileName to $XLS_FileName
