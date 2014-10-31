@@ -92,3 +92,4 @@ while (<CSVFILE>)
 #	print the row and increment the line number counter
 	$WorkSheet1->write_row($LineNum++, 0, $LineRef);
 }
+$WorkBook->close();
