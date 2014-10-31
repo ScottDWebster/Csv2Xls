@@ -71,4 +71,4 @@ while (<CSVFILE>)
 }
 
 $WorkBook->close();
-exec ($Excel, $XLS_FileName) or die "Can't exec \$Excel [$Excel]";
+exec ($Excel, "/e", $XLS_FileName) or die "Can't exec \$Excel [$Excel]";
