@@ -29,7 +29,7 @@ use Spreadsheet::WriteExcel;
 my ($debug, $CSV_FileName, $XLS_FileName, $LineNum, @LineArray, $LineRef);
 my ($element, $WorkSheet);
 
-$debug = 1;	# 0 = off, 1 = on
+$debug = 0;	# 0 = off, 1 = on
 
 # debug print
 if($debug){print ("\$ARGV[0] = $ARGV[0]\n");}

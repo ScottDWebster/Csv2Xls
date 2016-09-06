@@ -24,14 +24,17 @@ use strict;
 use warnings;
 use utf8;
 use Spreadsheet::WriteExcel;
+use Win32::OLE;
+use Win32::OLE qw(in with);
+use Win32::OLE::Const 'Microsoft Excel';
 
 # Variable Declarations
 my ($debug, $CSV_FileName, $XLS_FileName, $LineNum, @LineArray, $LineRef);
-my ($element, $WorkSheeti, $Excel);
+my ($element);
 
-$debug = 0;	# 0 = off, 1 = on
+$debug = 1;	# 0 = off, 1 = on
 
-$Excel = "C:/PROGRA~1/MICROS~2/OFFICE11/EXCEL.EXE";
+$Win32::OLE::Warn = 3; # Die on Errors.
 
 # debug print
 if($debug){print ("\$ARGV[0] = $ARGV[0]\n");}
@@ -71,7 +74,8 @@ while (<CSVFILE>)
 }
 
 $WorkBook->close();
-#$XLS_FileName =~ s#(\s)#\\$1#g;
-$XLS_FileName = "\"" . $XLS_FileName . "\"";
-print ($Excel, "/e", "$XLS_FileName");
-exec ($Excel, "/e", $XLS_FileName) or die "Can't exec \$Excel [$Excel]";
+
+my $Excel = Win32::OLE->GetActiveObject('Excel.Application') || Win32::OLE->new('Excel.Application');
+$Excel->{'Visible'} = 1;
+
+my $WB = $Excel->Workbooks->Open($XLS_FileName); 
