@@ -13,7 +13,7 @@
 # REQUIREMENTS: Spreadsheet::WriteExcel
 #         BUGS: ---
 #        NOTES: ---
-#       AUTHOR: Scott Webster (sdw), ScottW@ChefCentral.com
+#       AUTHOR: Scott Webster (sdw)
 # ORGANIZATION: Chef Central, Inc.
 #      VERSION: 1.0
 #      CREATED: 6/2/2014 4:17:56 PM
