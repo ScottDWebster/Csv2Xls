@@ -11,6 +11,7 @@
 #
 #      OPTIONS: ---
 # REQUIREMENTS: Spreadsheet::WriteExcel
+#		Win32::OLE
 #         BUGS: ---
 #        NOTES: ---
 #       AUTHOR: Scott Webster (sdw)
